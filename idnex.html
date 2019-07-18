@@ -12,20 +12,16 @@
 
   <script>
       var p = new Promise(function(resolve, reject) {
-          setTimeout(function() {
-              resolve(100);
-          }, 1000);
+console.log(1);
+        resolve('111');
+        console.log(2);
       });
 
-      p.then(function(res) {
-        console.log(res);
-
-        return 200;
-      }).then(function(res) {
-        console.log(res);
+      p.then(function(r){console.log(r);}, function(r){
+        console.log(r);
+        return 111;
       });
 
-      console.log(p);
   </script>
 </body>
 </html>

@@ -38,7 +38,7 @@ function Promise(executor) {
   function reject(reason) {
     if (that.status === PENDING) {
       that.status = REJECTED;
-      this.reason = reason;
+      that.reason = reason;
       that.onRejectedFns.forEach(function(cb) {
         cb(that.reason);
       });
@@ -92,21 +92,27 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
   if(that.status === PENDING) {
     return promise2 = new Promise(function(resolve, reject) {
       that.onFulfilledFns.push(function(value) {
-        try {
-          var x = onFulfilled(value);
-          resolvePromise(promise2, x, resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
+        setTimeout(function(){
+          try {
+            var x = onFulfilled(value);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        });
+        
       });
 
       that.onRejectedFns.push(function(reason) {
-        try {
-          var x = onRejected(reason);
-          resolvePromise(promise2, x, resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
+        setTimeout(function(){
+          try {
+            var x = onRejected(reason);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        });
+        
       });
     });
   }
@@ -114,30 +120,34 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
   // 成功态
   if(that.status === FULFILLED) {
     return promise2 = new Promise(function(resolve, reject) {
-      try {
-        var x = onFulfilled(that.value);
-        resolvePromise(promise2, x, resolve, reject);
-      } catch(e) {
-        reject(e);
-      }
+      setTimeout(function(){
+        try {
+          var x = onFulfilled(that.value);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch(e) {
+          reject(e);
+        }
+      });
     });
   }
 
   // 失败态
   if(that.status == REJECTED) {
     return promise2 = new Promise(function(resolve, reject) {
-      try {
-        var x = onRejected(this.reason);
-        resolvePromise(promise2, x, resolve, reject);
-      } catch(e) {
-        reject(e);
-      }
+      setTimeout(function(){
+        try {
+          var x = onRejected(this.reason);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch(e) {
+          reject(e);
+        };
+      })
     });
   }
 }
 
-Promise.prototype.catch = function () {
-
+Promise.prototype.catch = function (onRejected) {
+  return this.then(undefined, onRejected);
 }
 
 Promise.prototype.finally = function () {
