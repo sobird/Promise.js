@@ -103,6 +103,7 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
       that.onRejectedFns.push(function(reason) {
         try {
           var x = onRejected(reason);
+          resolvePromise(promise2, x, resolve, reject);
         } catch (e) {
           reject(e);
         }
@@ -115,6 +116,7 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
     return promise2 = new Promise(function(resolve, reject) {
       try {
         var x = onFulfilled(that.value);
+        resolvePromise(promise2, x, resolve, reject);
       } catch(e) {
         reject(e);
       }
@@ -126,6 +128,7 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
     return promise2 = new Promise(function(resolve, reject) {
       try {
         var x = onRejected(this.reason);
+        resolvePromise(promise2, x, resolve, reject);
       } catch(e) {
         reject(e);
       }
