@@ -12,15 +12,25 @@
 
   <script>
       var p = new Promise(function(resolve, reject) {
-console.log(1);
-        resolve('111');
-        console.log(2);
+
+        setTimeout(function() {
+          resolve(111);
+        }, 3000);
+
       });
 
-      p.then(function(r){console.log(r);}, function(r){
-        console.log(r);
-        return 111;
+      var p2 = new Promise(function(resolve, reject) {
+
+        setTimeout(function() {
+          resolve(222);
+        }, 1000);
+
       });
+
+      var pall = Promise.all([p, 1,2,3, p2]);
+      pall.then(function(res) {
+        console.log(res);
+      })
 
   </script>
 </body>

@@ -154,6 +154,35 @@ Promise.prototype.finally = function () {
 
 }
 
+Promise.all = function (ps) {
+  ps = Array.from(ps);
+
+  var result = [];
+  var l = ps.length;
+  var n = l;
+
+  return new Promise(function(resolve, reject) {
+    for(let i = 0; i < l; i++) {
+      var promise = ps[i];
+      if(!(promise instanceof Promise)) {
+        promise = new Promise(function(resolve) {
+          resolve(promise);
+        });
+      }
+
+      promise.then(function(value) {
+        result[i] = value;
+        
+        if(--n == 0) {
+          resolve(result);
+        }
+      }, function(reason) {
+        reject(reason);
+      });
+    }
+  });
+}
+
 /**
  * 2.3 The Promise Resolution Procedure
  * 
