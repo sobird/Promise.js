@@ -32,6 +32,11 @@
         console.log(res);
       })
 
+      var prace = Promise.race([p, 1,2,3, p2]);
+      prace.then(function(res) {
+        console.log(res);
+      })
+
   </script>
 </body>
 </html>

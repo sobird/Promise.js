@@ -154,16 +154,22 @@ Promise.prototype.finally = function () {
 
 }
 
-Promise.all = function (ps) {
-  ps = Array.from(ps);
+/**
+ * Promise.all(iterable) 方法返回一个 Promise 实例，
+ * 此实例在 iterable 参数内所有的 promise 都“完成（resolved）”或参数中不包含 promise 时回调完成（resolve）；
+ * 如果参数中 promise 有一个失败（rejected），此实例回调失败（reject），失败原因的是第一个失败 promise 的结果。
+ * 
+ */
+Promise.all = function (iterable) {
+  iterable = Array.from(iterable);
 
   var result = [];
-  var l = ps.length;
+  var l = iterable.length;
   var n = l;
 
   return new Promise(function(resolve, reject) {
     for(let i = 0; i < l; i++) {
-      var promise = ps[i];
+      var promise = iterable[i];
       if(!(promise instanceof Promise)) {
         promise = new Promise(function(resolve) {
           resolve(promise);
@@ -172,10 +178,40 @@ Promise.all = function (ps) {
 
       promise.then(function(value) {
         result[i] = value;
-        
+
         if(--n == 0) {
           resolve(result);
         }
+      }, function(reason) {
+        reject(reason);
+      });
+    }
+  });
+}
+
+/**
+ * Promise.race(iterable) 方法返回一个 promise，
+ * 一旦迭代器中的某个promise解决或拒绝，返回的 promise就会解决或拒绝。
+ * 
+ * @param  {Iterable} iterable
+ * @return {Promise}
+ */
+Promise.race = function (iterable) {
+  iterable = Array.from(iterable);
+
+  var l = iterable.length;
+
+  return new Promise(function(resolve, reject) {
+    for(let i = 0; i < l; i++) {
+      var promise = iterable[i];
+      if(!(promise instanceof Promise)) {
+        promise = new Promise(function(resolve) {
+          resolve(promise);
+        });
+      }
+
+      promise.then(function(value) {
+        resolve(value);
       }, function(reason) {
         reject(reason);
       });
