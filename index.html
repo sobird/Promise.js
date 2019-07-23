@@ -35,7 +35,22 @@
       var prace = Promise.race([p, 1,2,3, p2]);
       prace.then(function(res) {
         console.log(res);
-      })
+      });
+
+
+      console.log(1111);
+
+      var p3 = new Promise(function(resolve, reject) {
+        resolve(3333);
+      });
+
+      setTimeout(function() {
+        console.log(2222);
+      });
+
+      p3.then(function(res) {
+        console.log(res);
+      });
 
   </script>
 </body>

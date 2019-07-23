@@ -154,6 +154,18 @@ Promise.prototype.finally = function () {
 
 }
 
+Promise.resolve = function (value) {
+  return new Promise(function(resolve) {
+    resolve(value);
+  });
+}
+
+Promise.reject = function (reason) {
+  return new Promise(function(resolve, reject) {
+    reject(reason);
+  });
+}
+
 /**
  * Promise.all(iterable) 方法返回一个 Promise 实例，
  * 此实例在 iterable 参数内所有的 promise 都“完成（resolved）”或参数中不包含 promise 时回调完成（resolve）；
