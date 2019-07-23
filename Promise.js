@@ -150,8 +150,12 @@ Promise.prototype.catch = function (onRejected) {
   return this.then(undefined, onRejected);
 }
 
-Promise.prototype.finally = function () {
-
+Promise.prototype.finally = function (callback) {
+  let P = this.constructor;
+  return this.then(
+    value  => P.resolve(callback()).then(() => value),
+    reason => P.resolve(callback()).then(() => { throw reason })
+  );
 }
 
 Promise.resolve = function (value) {
