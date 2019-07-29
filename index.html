@@ -11,47 +11,67 @@
 <body>
 
   <script>
-      var p = new Promise(function(resolve, reject) {
+      // var p = new Promise(function(resolve, reject) {
 
-        setTimeout(function() {
-          resolve(111);
-        }, 3000);
+      //   setTimeout(function() {
+      //     resolve(111);
+      //   }, 3000);
 
-      });
+      // });
 
-      var p2 = new Promise(function(resolve, reject) {
+      // var p2 = new Promise(function(resolve, reject) {
 
-        setTimeout(function() {
-          resolve(222);
-        }, 1000);
+      //   setTimeout(function() {
+      //     resolve(222);
+      //   }, 1000);
 
-      });
+      // });
 
-      var pall = Promise.all([p, 1,2,3, p2]);
-      pall.then(function(res) {
+      // var pall = Promise.all([p, 1,2,3, p2]);
+      // pall.then(function(res) {
+      //   console.log(res);
+      // })
+
+      // var prace = Promise.race([p, 1,2,3, p2]);
+      // prace.then(function(res) {
+      //   console.log(res);
+      // });
+
+
+      // console.log(1111);
+
+      // var p3 = new Promise(function(resolve, reject) {
+      //   resolve(3333);
+      // });
+
+      // setTimeout(function() {
+      //   console.log(2222);
+      // });
+
+      // p3.then(function(res) {
+      //   console.log(res);
+      // }).finally(function() {
+      //   console.log(arguments);
+      // });
+
+
+
+      // thread 测试
+      var threads = [];
+      for (let i = 0; i < 10; i++) {
+        var p = new Promise.resolve((resolve) => {
+          console.log(i, 'start');
+          setTimeout(function() {
+            resolve({end: i});
+          }, 1000);
+        });
+
+        threads.push(p);
+      }
+
+
+      Promise.thread(threads, 1).then(res => {
         console.log(res);
-      })
-
-      var prace = Promise.race([p, 1,2,3, p2]);
-      prace.then(function(res) {
-        console.log(res);
-      });
-
-
-      console.log(1111);
-
-      var p3 = new Promise(function(resolve, reject) {
-        resolve(3333);
-      });
-
-      setTimeout(function() {
-        console.log(2222);
-      });
-
-      p3.then(function(res) {
-        console.log(res);
-      }).finally(function() {
-        console.log(arguments);
       });
 
   </script>

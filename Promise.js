@@ -236,6 +236,62 @@ Promise.race = function (iterable) {
 }
 
 /**
+ * Promise.all方法的改进版，支持一个最大并发请求数
+ * 
+ * @param  {Array} iterable 
+ * @param  {Number} threadNum
+ * @return {Promise} 
+ */
+// Promise.thread = function (iterable, threadNum) {
+//   iterable = Array.from(iterable);
+
+//   var result = [];
+//   var l = iterable.length;
+//   var n = l;
+//   var queue = Array.prototype.slice.call(iterable, 0);
+
+//   return new Promise((resolve, reject) => {
+//     for(var i = 0; i < l; i++) {
+//       if(i == threadNum) {
+//         return;
+//       }
+
+//       var promise = iterable[i];
+//       if(!(promise instanceof Promise)) {
+//         promise = new Promise(function(resolve) {
+//           resolve(promise);
+//         });
+//       }
+
+//       (function(promise) {
+//         var self = arguments.callee;
+
+//         promise.then(function(value) {
+//           if( i == l ) {
+//             return;
+//           }
+          
+
+//           result[i] = value;
+
+//           console.log(--n);
+
+//           if(--n < 1) {
+//             resolve(result);
+//           }
+
+//           i++;
+
+//           self(iterable[i]);
+//         }, function(reason) {
+//           reject(reason);
+//         });
+//       })(promise);
+//     }
+//   });
+// }
+
+/**
  * 2.3 The Promise Resolution Procedure
  * 
  * 2.3.1 如果promise和x引用同一个对象，则用TypeError作为原因拒绝（reject）promise。
